@@ -25,7 +25,7 @@ class Array[T]:
         self._size = size
         PyArrayType = ctypes.py_object * self._size
         self._elements = PyArrayType()
-        self.clear(None)  # pyright: ignore[reportUnknownMemberType]
+        self.clear(None)
 
     # Return the size of the array
     def __len__(self) -> int:
