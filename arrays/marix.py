@@ -1,6 +1,6 @@
 from typing import Any
 
-from array_custom import Array2D
+from arrays.array import Array2D
 
 
 class Matrix[T: (int, float, complex)]:
