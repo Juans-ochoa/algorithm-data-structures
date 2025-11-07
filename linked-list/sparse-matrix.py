@@ -1,4 +1,6 @@
-from array import array
+from arrays.array import Array
+
+TNdxTuple = tuple[int, int]
 
 
 class _MatrixElementNode:
@@ -9,9 +11,9 @@ class _MatrixElementNode:
 
 
 class SparseMatrix:
-    def __init__(self, num_rows, num_cols):
+    def __init__(self, num_rows: int, num_cols: int):
         self._num_cols = num_cols
-        self._list_rows = array(num_rows)
+        self._list_rows = Array(num_rows)
 
     # Returns the number of tows int the matrix
     def num_rows(self):
@@ -22,12 +24,12 @@ class SparseMatrix:
         return self._num_cols
 
     # Return the value of element (i,j):x[i,j]
-    def __getitem__(self, ndx_tuple):
+    def __getitem__(self, ndx_tuple: TNdxTuple):
         pass
 
     # Set the value of element(i,j) th the value s: x[i,j] = s
-    def __setitem__(self, ndx_tuple, value):
-        row, col = ndx_tuple.row, ndx_tuple.col
+    def __setitem__(self, ndx_tuple: TNdxTuple, value):
+        row, col = ndx_tuple
 
         prev_node = None
         cur_node = self._list_rows[row]
