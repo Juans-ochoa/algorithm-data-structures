@@ -115,3 +115,63 @@ class Array2D[T]:
 
         the_1d_array = self._rows[row]
         the_1d_array[col] = value
+
+
+class MultiArray:
+    def __init__(self, *dimensions: list[int]) -> None:
+        assert len(dimensions) > 1, "The array must have 2 or more dimensions."
+        self._dims = dimensions
+
+        # Compute the total number of elements in the array.
+        size = 1
+        for d in dimensions:
+            assert d > 0, "Dimensions must  be > 0"
+            size *= d
+
+        # Create the 1-D array to store the elements
+        self._elements = Array(size)
+        # Create a 1-D Array to store the equation factors.
+        self._factors = Array(len(dimensions))
+        self._compute_factors()
+
+    # Returns the number of dimensions in the array
+    def num_dims(self) -> int:
+        return len(self._dims)
+
+    # Returns the length of given dimension.
+    def length(self, dim: int):
+        assert dim >= 1 and dim < len(self._dims), \
+            "Dimension component out of range"
+        return self._dims[dim - 1]
+
+    # Clears the array by setting all elements to the given value.
+    def clear(self, value: Any):
+        self._elements.clear(value)
+
+    # Returns the contents of element (i_1, i_2,..., i_n)
+    def __getitem__(self, ndxTuple: tuple):
+        assert len(ndxTuple) == self.num_dims(
+        ), "Invalid # of array subscripts."
+        index = self._compute_index(ndxTuple)
+        assert index is not None, "Array subscript out of range"
+        return self._elements[index]
+
+    # Set the contents of element(i_1, i_2,...,i_n)
+    def __setitem__(self, ndxTuple: tuple, value: Any):
+        assert len(ndxTuple) == self.num_dims(
+        ), "Invalid # of array subscripts."
+        index = self._compute_index(ndxTuple)
+        assert index is not None, "Array subscript out of range."
+        self._elements[index] = value
+
+    # Computes the 1-D array offset for element (i_1, i_2,..., i_n).
+    def _compute_index(self, idx: tuple) -> int | None:
+        offset = 0
+        for i in range(idx):
+            # Make sure the index components are within the legal range.
+            if idx[i] < 0 or idx[i] >= self._dims[i]:
+                return None
+            else:
+                offset += idx[i] * self._factors[i]
+
+        return offset
